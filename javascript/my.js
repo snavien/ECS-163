@@ -88,7 +88,7 @@ d3.csv("data/print3.csv", function(error, data) {
 			.attr("x", width/2)
 			.attr("y", 30)
 			.style("text-anchor", "middle")
-			.text("Time");
+			.text("Time (m)");
 			// .append("text")
 			// .attr("y", 450)
 			// .style("text-anchor", "end")
@@ -128,16 +128,17 @@ d3.csv("data/print3.csv", function(error, data) {
 					div.transition()
 						.duration(200)
 						.style("opacity", .95);
-					div.html("killed " + d.player_a)
+					div.html("killed " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
 						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
-						.style("top", (d3.event.pageY - 28) + "px")
+						.style("top", (d3.event.pageY ) + "px")
 						.style("font", "8px arial, serif")
+
 				}
 				else{
 					div.transition()
 						.duration(200)
 						.style("opacity", .95);
-					div.html("chatted with " + d.player_a)
+					div.html("chatted with " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
 						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
 						.style("top", (d3.event.pageY - 28) + "px")
 						.style("font", "8px arial, serif")

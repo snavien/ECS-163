@@ -2,12 +2,9 @@ body {
 	padding:20px;
 }
 
-.bar {
-  fill: steelblue;
-}
-
-.bar:hover {
-  fill: brown;
+.dot:hover {
+  fill: purple;
+	stroke: white;
 }
 
 .axis {
@@ -22,18 +19,18 @@ body {
 }
 
 .barchart_svg {
-	border:1px solid lightgrey;	
+	border:1px solid lightgrey;
 }
 
-div.tooltip {	
-    position: absolute;			
-    text-align: center;			
-    width: 150px;					
-    height: 30px;					
-    padding: 5px;				
-    font: 16px sans-serif;		
-    background: lightsteelblue;	
-    border: 0px;		
-    border-radius: 8px;			
-    pointer-events: none;			
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 200px;
+    height: 30px;
+    padding: 5px;
+    font: 16px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
 }
