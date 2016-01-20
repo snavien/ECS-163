@@ -119,11 +119,13 @@ d3.csv("data/print3.csv", function(error, data) {
 				return x(d.player_a); })
 			.attr("fill-opacity", 0.70)
       .attr("cx", function(d) { return y(d.start_t); })
+
 			//.attr("x", )
 			//.attr("width", x.rangeBand())
 			//.attr("y", )
 			//.attr("height", function(d) { return height - y(d.total_time); })
 			.on("mouseover", function(d) {
+				d3.select(this).attr("r", d3.select(this).attr("r") * 1 * 2);
 				if(d.key == " KilledBy"){
 					div.transition()
 						.duration(200)
@@ -132,7 +134,6 @@ d3.csv("data/print3.csv", function(error, data) {
 						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
 						.style("top", (d3.event.pageY ) + "px")
 						.style("font", "8px arial, serif")
-
 				}
 				else{
 					div.transition()
@@ -146,6 +147,7 @@ d3.csv("data/print3.csv", function(error, data) {
 
 				})
 			.on("mouseout", function(d) {
+				d3.select(this).attr("r", (d.stop_t - d.start_t));
 				div.transition()
                 	.duration(500)
                 	.style("opacity", 0);

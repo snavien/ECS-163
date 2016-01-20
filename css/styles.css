@@ -5,6 +5,8 @@ body {
 .dot:hover {
   fill: purple;
 	stroke: white;
+	opacity: .98;
+
 }
 
 .axis {
@@ -18,9 +20,6 @@ body {
   shape-rendering: crispEdges;
 }
 
-.barchart_svg {
-	border:1px solid lightgrey;
-}
 
 div.tooltip {
     position: absolute;
