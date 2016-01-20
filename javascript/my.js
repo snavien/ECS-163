@@ -5,9 +5,9 @@
 
 
 // set dimensions of the canvas / graph
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
+var margin = {top: 20, right: 20, bottom: 60, left: 50},
 				  width = 800 - margin.left - margin.right,
-				  height = 500 - margin.top - margin.bottom;
+				  height = 500 - margin.top - margin.bottom + 20;
 
 // set the ranges
 var x = d3.scale.ordinal().rangeRoundBands([0, height], .1); //players
@@ -105,11 +105,11 @@ d3.csv("data/print3.csv", function(error, data) {
 			.attr("class", "dot")
       .attr("r", function(d){ return d.stop_t - d.start_t; })
 			.attr("fill", function(d){ if(d.key == " KilledBy") return "red"; else return "blue";})
-      .attr("cx", function(d) {
+      .attr("cy", function(d) {
 				console.log(d.player_a);
 				return x(d.player_a); })
 			.attr("fill-opacity", 0.70)
-      .attr("cy", function(d) { return y(d.start_t); })
+      .attr("cx", function(d) { return y(d.start_t); })
 			//.attr("x", )
 			//.attr("width", x.rangeBand())
 			//.attr("y", )
