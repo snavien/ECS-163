@@ -5,8 +5,8 @@
 
 
 // set dimensions of the canvas / graph
-var margin = {top: 20, right: 20, bottom: 60, left: 50},
-				  width = 800 - margin.left - margin.right,
+var margin = {top: 20, right: 20, bottom: 60, left: 250},
+				  width = 1000 - margin.left - margin.right,
 				  height = 500 - margin.top - margin.bottom + 20;
 
 // set the ranges
@@ -83,10 +83,19 @@ d3.csv("data/print3.csv", function(error, data) {
 	svg.append("g")
 	  	.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
-	  	.call(xAxis);
+	  	.call(xAxis)
+			.append("text")
+			.attr("x", width/2)
+			.attr("y", 30)
+			.style("text-anchor", "middle")
+			.text("Time");
+			// .append("text")
+			// .attr("y", 450)
+			// .style("text-anchor", "end")
+			// .text("Time");
 
 	svg.append("g")
-	  	.attr("class", "y axis")
+	  .attr("class", "y axis")
 		.call(yAxis)
 		.append("text")
 		//.attr("transform", "rotate(180)")
@@ -115,12 +124,25 @@ d3.csv("data/print3.csv", function(error, data) {
 			//.attr("y", )
 			//.attr("height", function(d) { return height - y(d.total_time); })
 			.on("mouseover", function(d) {
-				div.transition()
-					.duration(200)
-					.style("opacity", .9);
-				div.html(d.key + " = " + d.player_a)
-					.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
-                	.style("top", (d3.event.pageY - 28) + "px")
+				if(d.key == " KilledBy"){
+					div.transition()
+						.duration(200)
+						.style("opacity", .95);
+					div.html("killed " + d.player_a)
+						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
+						.style("top", (d3.event.pageY - 28) + "px")
+						.style("font", "8px arial, serif")
+				}
+				else{
+					div.transition()
+						.duration(200)
+						.style("opacity", .95);
+					div.html("chatted with " + d.player_a)
+						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
+						.style("top", (d3.event.pageY - 28) + "px")
+						.style("font", "8px arial, serif")
+				}
+
 				})
 			.on("mouseout", function(d) {
 				div.transition()
