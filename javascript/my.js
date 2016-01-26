@@ -59,19 +59,46 @@ d3.csv("data/print3.csv", function(error, data) {
 	// });
 
 	//make a selection box
+	//create unique list of player b's
 	var player_b = [], count = 0;
-
+	var u = {};
 	for(var i = 0; i < data.length; i++){
-		player_b[count] = data[i].player_b;
+	  if(u.hasOwnProperty(data[i].player_b)) {
+	     continue;
+	  }
+	  player_b.push(data[i].player_b);
 		count++;
-	}
+	  u[data[i].player_b] = 1;
+ 	}
+
 	console.log(player_b);
+
+	var select = d3.select('body')
+							.append('select')
+							.attr('class', 'select_pb')
+							.on('change', onchange);
+	var option = select
+							.selectAll('option')
+							.data(player_b).enter()
+							.append('option')
+							.text(function(d) {return d;});
+	function onchange(){
+		selectValue = d3.select('select').property('value');
+		d3.select('body')
+			.append('p')
+			.text(selectValue + ' is the last selected option.');
+
+		return selectValue;
+	};
+
 
 
 	var player_data = [];
 	count = 0;
 	for(var i = 0; i < data.length; i++){
-		if(data[i].player_b == ' 00040857941a98d183a9ffcc5efc12a5e73a91ad')
+		var pb = d3.select('select').property('value');
+		console.log(pb);
+		if(data[i].player_b == pb)
 		{
 			player_data[count] = data[i];
 			count++;
