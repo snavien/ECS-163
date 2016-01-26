@@ -9,9 +9,17 @@
 // set dimensions of the canvas / graph
 var base_width = $(window).width();
 var base_height = $(window).height();
+
+//TODO: http://stackoverflow.com/questions/13280809/jquery-resize-on-window-scale-up-or-scale-down
 var margin = {top: 20, right: 20, bottom: 60, left: 250},
-				  width = base_width - margin.left - margin.right,
-				  height = base_height - margin.top - margin.bottom + 20;
+				  width = base_width - margin.left - margin.right - 100,
+				  height = base_height - margin.top - margin.bottom - 100;
+
+
+
+
+
+
 
 // set the ranges
 var x = d3.scale.ordinal().rangeRoundBands([0, height], .1); //players
@@ -49,7 +57,19 @@ d3.csv("data/print3.csv", function(error, data) {
 	// var player_data = data.filter(function(d) {
 	// 	return d.player_b === "00040857941a98d183a9ffcc5efc12a5e73a91ad")
 	// });
-	var player_data = [], count = 0;
+
+	//make a selection box
+	var player_b = [], count = 0;
+
+	for(var i = 0; i < data.length; i++){
+		player_b[count] = data[i].player_b;
+		count++;
+	}
+	console.log(player_b);
+
+
+	var player_data = [];
+	count = 0;
 	for(var i = 0; i < data.length; i++){
 		if(data[i].player_b == ' 00040857941a98d183a9ffcc5efc12a5e73a91ad')
 		{
@@ -61,12 +81,12 @@ d3.csv("data/print3.csv", function(error, data) {
 
 	// get the total time spent on each key
 	var max = d3.max(player_data, function(d) {
-	return +d.stop_t;
+	return +d.stop_t/1000;
 //  	return d3.max(d.stop_t, function(e) { return d3.max(e); });
 	});
 
 	var min = d3.min(player_data, function(d) {
-		return +d.start_t;
+		return +d.start_t/1000;
 		//return d3.min(d.start_t, function(e) { return d3.min(e); });
 	});
 	console.log(max);
@@ -92,7 +112,7 @@ d3.csv("data/print3.csv", function(error, data) {
 			.attr("x", width/2)
 			.attr("y", 30)
 			.style("text-anchor", "middle")
-			.text("Time (m)");
+			.text("Time (1000m)");
 			// .append("text")
 			// .attr("y", 450)
 			// .style("text-anchor", "end")
@@ -122,7 +142,7 @@ d3.csv("data/print3.csv", function(error, data) {
 				console.log(d.player_a);
 				return x(d.player_a); })
 			.attr("fill-opacity", 0.70)
-      .attr("cx", function(d) { return y(d.start_t); })
+      .attr("cx", function(d) { return y(d.start_t/1000); })
 
 			//.attr("x", )
 			//.attr("width", x.rangeBand())
