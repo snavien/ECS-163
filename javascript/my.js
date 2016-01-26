@@ -8,10 +8,10 @@
 
 // set dimensions of the canvas / graph
 var base_width = $(window).width();
-var base_height = $(window).width();
+var base_height = $(window).height();
 var margin = {top: 20, right: 20, bottom: 60, left: 250},
-				  width = 1000 - margin.left - margin.right,
-				  height = 500 - margin.top - margin.bottom + 20;
+				  width = base_width - margin.left - margin.right,
+				  height = base_height - margin.top - margin.bottom + 20;
 
 // set the ranges
 var x = d3.scale.ordinal().rangeRoundBands([0, height], .1); //players
