@@ -4,7 +4,11 @@
 // if you want to reference it here.
 
 
+
+
 // set dimensions of the canvas / graph
+var base_width = $(window).width();
+var base_height = $(window).width();
 var margin = {top: 20, right: 20, bottom: 60, left: 250},
 				  width = 1000 - margin.left - margin.right,
 				  height = 500 - margin.top - margin.bottom + 20;
@@ -107,7 +111,7 @@ d3.csv("data/print3.csv", function(error, data) {
 	console.log(player_data[0].server_id);
 	console.log(player_data[0].start_t);
 
-	// add the bars
+	// add the dots
 	svg.selectAll(".dot")
 		.data(player_data)
 		.enter().append("circle")
@@ -133,7 +137,7 @@ d3.csv("data/print3.csv", function(error, data) {
 					div.html("killed " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
 						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
 						.style("top", (d3.event.pageY ) + "px")
-						.style("font", "8px arial, serif")
+						.style("font", "9.5px arial, serif")
 				}
 				else{
 					div.transition()
@@ -142,7 +146,7 @@ d3.csv("data/print3.csv", function(error, data) {
 					div.html("chatted with " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
 						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
 						.style("top", (d3.event.pageY - 28) + "px")
-						.style("font", "8px arial, serif")
+						.style("font", "9.5px arial, serif")
 				}
 
 				})
