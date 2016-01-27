@@ -1,8 +1,6 @@
- KilledBy,0
- Kicks,0
- BlockPlace,0
- Death,0
- BlockBreak,0
- Chat,0
- CraftedItems,0
- Logins,0
+action,countBlockBreak,15551474Chat,129975Logins,226169
+KilledBy,107967
+Kicks,15763
+CraftedItems,374938
+Death,165051
+BlockPlace,10408830
