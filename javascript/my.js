@@ -16,10 +16,55 @@ var margin = {top: 20, right: 20, bottom: 60, left: 250},
 				  height = base_height - margin.top - margin.bottom - 100;
 
 
+//TODO: Create overview of actions or servers
 
 
+var width = 960,
+    height = 500,
+    radius = Math.min(width, height) / 2;
 
+var min_cnt = 0,
+		max_cnt = 0;
+var color = d3.scale.linear.do-main([min_cnt, max_cnt]).range("red", "black");
 
+var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(radius - 70);
+
+var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.count; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+d3.csv("all_actions.csv", type, function(error, data) {
+	  if (error) throw error;
+
+	  var g = svg.selectAll(".arc")
+	      .data(pie(data))
+	    .enter().append("g")
+	      .attr("class", "arc");
+
+	  g.append("path")
+	      .attr("d", arc)
+	      .style("fill", function(d) { return color(d.data.age); });
+
+	  g.append("text")
+	      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+	      .attr("dy", ".35em")
+	      .text(function(d) { return d.data.age; });
+	});
+
+	function type(d) {
+	  d.population = +d.population;
+	  return d;
+}
+
+</script>
 
 // set the ranges
 var x = d3.scale.ordinal().rangeRoundBands([0, height], .1); //players
@@ -52,7 +97,7 @@ var div = d3.select("body").append("div")
 // Load the data, process it, and display it with a bar chart.
 // You can't load the fullsize file, so you'll need to do some
 // preprocessing to break the data up or aggregate it
-d3.csv("data/print3.csv", function(error, data) {
+d3.csv("data/all_actions.csv", function(error, data) {
 	if (error) throw error;
 	// var player_data = data.filter(function(d) {
 	// 	return d.player_b === "00040857941a98d183a9ffcc5efc12a5e73a91ad")
@@ -72,43 +117,47 @@ d3.csv("data/print3.csv", function(error, data) {
  	}
 
 	console.log(player_b);
+	var player_data = [];
 
 	var select = d3.select('body')
 							.append('select')
 							.attr('class', 'select_pb')
-							.on('change', onchange);
+							.on('change', onchange(player_data));
 	var option = select
 							.selectAll('option')
 							.data(player_b).enter()
 							.append('option')
 							.text(function(d) {return d;});
-	function onchange(){
+	function onchange(player_data){
 		selectValue = d3.select('select').property('value');
 		d3.select('body')
 			.append('p')
 			.text(selectValue + ' is the last selected option.');
 
-		return selectValue;
+			return function set_pd(){
+
+			count = 0;
+			alert(player_data);
+			for(var i = 0; i < data.length; i++){
+				var pb = d3.select('select').property('value');
+				console.log(pb);
+				if(data[i].player_b == " "+ pb)
+				{
+					player_data[count] = data[i];
+					count++;
+				}
+			}
+		};
 	};
 
 
 
-	var player_data = [];
-	count = 0;
-	for(var i = 0; i < data.length; i++){
-		var pb = d3.select('select').property('value');
-		console.log(pb);
-		if(data[i].player_b == pb)
-		{
-			player_data[count] = data[i];
-			count++;
-		}
-	}
+
 
 
 	// get the total time spent on each key
 	var max = d3.max(player_data, function(d) {
-	return +d.stop_t/1000;
+		return +d.stop_t/1000;
 //  	return d3.max(d.stop_t, function(e) { return d3.max(e); });
 	});
 
