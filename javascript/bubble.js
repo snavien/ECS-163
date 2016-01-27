@@ -1,75 +1,21 @@
-// Calling the file my.js.
-// Make sure you have already loaded the
-// d3 file and html elements
-// if you want to reference it here.
-
-
-
-/** WINDOW DIMENSIONS **/
-// set dimensions of the canvas / graph
-var base_width = $(window).width();
-var base_height = $(window).height();
-
-//TODO: http://stackoverflow.com/questions/13280809/jquery-resize-on-window-scale-up-or-scale-down
-var margin = {top: 20, right: 20, bottom: 60, left: 250},
-				  width = base_width - margin.left - margin.right - 100,
-				  height = base_height - margin.top - margin.bottom - 100;
-
-
-/** OVERVIEW CHART**/
-//TODO: Create overview of actions or servers
-var width = 960,
-    height = 500,
-    radius = Math.min(width, height) / 2;
-
-var min_cnt = 0,
-		max_cnt = 0;
-var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-//var color = d3.scale.linear.do-main([min_cnt, max_cnt]).range("red", "black");
-
-var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(radius - 70);
-
-var pie = d3.layout.pie()
-    .sort(null)
-    .value(function(d) { return d.count; });
-
-
-var svg = d3.select("#donutchart").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-  	.append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-d3.csv("all_actions.csv", type, function(error, data) {
-	  if (error) throw error;
-
-
-	  var g = svg.selectAll(".arc")
-	      .data(pie(data))
-	    	.enter().append("g")
-	      .attr("class", "arc");
-
-	  g.append("path")
-	      .attr("d", arc)
-	      .style("fill", function(d) { return color(d.data.count); });
-
-	  g.append("text")
-	      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-	      .attr("dy", ".35em")
-	      .text(function(d) { return d.data.actions; });
-	});
-
-	function type(d) {
-	  d.population = +d.population;
-	  return d;
-}
-
-</script>
-
+// // Calling the file my.js.
+// // Make sure you have already loaded the
+// // d3 file and html elements
+// // if you want to reference it here.
+//
+//
+//
+// /** WINDOW DIMENSIONS **/
+// // set dimensions of the canvas / graph
+// var base_width = $(window).width();
+// var base_height = $(window).height();
+//
+// //TODO: http://stackoverflow.com/questions/13280809/jquery-resize-on-window-scale-up-or-scale-down
+// var margin = {top: 20, right: 20, bottom: 60, left: 250},
+// 				  width = base_width - margin.left - margin.right - 100,
+// 				  height = base_height - margin.top - margin.bottom - 100;
+//
+//
 // // set the ranges
 // var x = d3.scale.ordinal().rangeRoundBands([0, height], .1); //players
 // var y = d3.scale.linear().range([width, 0]); //time
@@ -153,10 +99,6 @@ d3.csv("all_actions.csv", type, function(error, data) {
 // 			}
 // 		};
 // 	};
-//
-//
-//
-//
 //
 //
 // 	// get the total time spent on each key
