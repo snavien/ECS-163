@@ -1,7 +1,7 @@
 /** OVERVIEW CHART**/
 //TODO: Create overview of actions or servers
-var width = 500,
-    height = 500,
+var width = 1000,
+    height = 600,
     radius = Math.min(width, height) / 2;
 console.log("here");
 var min_cnt = 0,
@@ -43,11 +43,6 @@ tooltip_arc.append('div')
 tooltip_arc.append('div')
       .attr('class', 'percent');
 
-
-
-
-
-
 d3.csv("data/all_actions.csv", function(error, data) {
     if (error) throw error;
     var total = 0;
@@ -85,6 +80,7 @@ d3.csv("data/all_actions.csv", function(error, data) {
               .style("stroke", "white")
               .style("stroke-width", "2")
               .attr("class", "path")
+              .attr("transform", "translate(400,0)")
               .on("mouseenter", function(d) {
                 d3.select(this)
                    .attr("stroke","white")
@@ -108,8 +104,8 @@ d3.csv("data/all_actions.csv", function(error, data) {
           tooltip_arc.select('.count').html(d.count);
           var perc = tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
           tooltip_arc.style('display', 'inline-block');
-          perc.style("left", d3.event.pageX-1555+"px");
-          perc.style("top", d3.event.pageY-25+"px");
+          perc.style("left", d3.event.pageX+"px");
+          perc.style("top", d3.event.pageY+"px");
           perc.style("opacity", ".95");
         })
         .on("mouseout", function(d){

@@ -52,3 +52,15 @@ body {
         width: 80px;
 				opacity:.95;
       }
+
+#bubblechart{
+	position:absolute;
+	left: 50px;
+	top: 100px;
+}
+
+/*#donutchart{
+	position:absolute;
+	left: 1000px;
+	top: 100px;
+}*/

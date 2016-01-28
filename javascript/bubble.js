@@ -12,8 +12,8 @@ var base_height = $(window).height();
 
 //TODO: http://stackoverflow.com/questions/13280809/jquery-resize-on-window-scale-up-or-scale-down
 var margin = {top: 20, right: 20, bottom: 60, left: 250},
-				  width = base_width - margin.left - margin.right - 100,
-				  height = base_height - margin.top - margin.bottom - 100;
+				  width = 1000 - margin.left - margin.right - 100,
+				  height = 600 - margin.top - margin.bottom - 100;
 
 
 // set the ranges
@@ -111,8 +111,6 @@ d3.csv("data/print3.csv", function(error, data) {
 	}
 
 
-
-
 	// get the total time spent on each key
 	var max = d3.max(player_data, function(d) {
 		return +d.stop_t/1000;
@@ -125,22 +123,20 @@ d3.csv("data/print3.csv", function(error, data) {
 	});
 	console.log(max);
 	console.log(min);
-//	var max = d3.max(data, function(d){return +d.stop_t};);
-		//var min = d3.min(player_data, function(d){return +d.start_t};)
+	
 	var times = calc_time_per_key(player_data);
 
-//	var min = d3.min(player_data, function(d){return +d.start_t};)
 	// scale the data ranges
 	// the x domain goes over the set of keys
 	x.domain(player_data.map(function(d) { return d.player_a; }));
+	
 	// y goes from 0 to the max value in times
-
 	y.domain([max,min]);
 
 	// add the axes
 	svg.append("g")
 	  	.attr("class", "x axis")
-			.attr("transform", "translate(0," + height + ")")
+			.attr("transform", "translate(0,400)")
 	  	.call(xAxis)
 			.append("text")
 			.attr("x", width/2)
@@ -156,7 +152,7 @@ d3.csv("data/print3.csv", function(error, data) {
 	  .attr("class", "y axis")
 		.call(yAxis)
 		.append("text")
-		//.attr("transform", "rotate(180)")
+	//	.attr("transform", "translate(-500,0)")
 		.attr("y", -40)
 		.attr("dy", "3em")
 		.style("text-anchor", "end")
@@ -167,6 +163,7 @@ d3.csv("data/print3.csv", function(error, data) {
 
 	// add the dots
 	svg.selectAll(".dot")
+		.append("g")
 		.data(player_data)
 		.enter().append("circle")
 			.attr("class", "dot")
@@ -178,10 +175,6 @@ d3.csv("data/print3.csv", function(error, data) {
 			.attr("fill-opacity", 0.70)
       .attr("cx", function(d) { return y(d.start_t/1000); })
 
-			//.attr("x", )
-			//.attr("width", x.rangeBand())
-			//.attr("y", )
-			//.attr("height", function(d) { return height - y(d.total_time); })
 			.on("mouseover", function(d) {
 				d3.select(this).attr("r", d3.select(this).attr("r") * 1 * 2);
 				if(d.key == " KilledBy"){
