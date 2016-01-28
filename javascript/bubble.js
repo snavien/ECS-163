@@ -36,8 +36,8 @@ var bvis = d3.select("#bubblechart").append("svg")
 	    	.attr("width", width + margin.left + margin.right)
 	    	.attr("height", height + margin.top + margin.bottom)
 	    	.attr("class", "bubblechart_svg")
-	  		.append("g");
-	    	//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	  		.append("g")
+	    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // this div is used for the tooltip
 var div = bvis.append("div")
@@ -110,7 +110,6 @@ d3.csv("data/print3.csv", function(error, data) {
 		}
 	}
 
-
 	// get the total time spent on each key
 	var max = d3.max(player_data, function(d) {
 		return +d.stop_t/1000;
@@ -136,7 +135,7 @@ d3.csv("data/print3.csv", function(error, data) {
 	// add the axes
 	bvis.append("g")
 	  	.attr("class", "x axis")
-			.attr("transform", "translate(0," + (height + 39) +")")
+		.attr("transform", "translate(0," + (height - margin.top * 4) +")")
 	  	.call(xAxis)
 			.append("text")
 			.attr("x", width/2)
