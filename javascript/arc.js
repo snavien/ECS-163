@@ -28,6 +28,19 @@ var svg = d3.select("#donutchart")
   	.append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+var tooltip = d3.select("body")
+              .append('div')
+              .attr('class', 'label');
+tooltip.append('div')
+       .attr('class', 'label');
+
+tooltip.append('div')
+       .attr('class', 'count');
+
+tooltip.append('div')
+      .attr('class', 'percent');
+
+
 d3.csv("data/all_actions.csv", function(error, data) {
     if (error) throw error;
 
@@ -37,12 +50,27 @@ d3.csv("data/all_actions.csv", function(error, data) {
 	    	.enter().append("g")
 	      .attr("class", "arc");
 
-	  g.append("path")
-        .data(pie(data))
-	      .attr("d", arc)
-	      .style("fill", function(d, i) {return color(i); })
-        .style("stroke", "white")
-        .style("stroke-width", "2");
+
+	  var path = g.append("path")
+              .data(pie(data))
+      	      .attr("d", arc)
+      	      .style("fill", function(d, i) {return color(i); })
+              .style("stroke", "white")
+              .style("stroke-width", "2")
+              .attr("class", "path");
+    // var path = svg.selectAll('path')
+    path.on("mouseover", function(d, i){
+          console.log("pooop");
+          var total = d3.sum(data.map(function(d) {
+            return d.count;
+          }));
+          console.log("!");
+          var percent = Math.round(1000 * d.count / total) / 10;
+          tooltip.select('.label').html(d.label);
+          tooltip.select('.count').html(d.count);
+          tooltip.select('.percent').html(percent + '%');
+          tooltip.style('display', 'block');
+        });
 
 	  g.append("text")
 	      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
