@@ -14,6 +14,8 @@ var color = d3.scale.category20b();
 //var color = d3.scale.linear.do-main([min_cnt, max_cnt]).range("red", "black");
 
 var arc = d3.svg.arc()
+    .startAngle(function(d){ return d.startAngle; })
+    .endAngle(function(d){ return d.endAngle; })
     .outerRadius(radius - 10)
     .innerRadius(radius - 90);
 
@@ -42,6 +44,10 @@ tooltip_arc.append('div')
       .attr('class', 'percent');
 
 
+
+
+
+
 d3.csv("data/all_actions.csv", function(error, data) {
     if (error) throw error;
     var total = 0;
@@ -58,7 +64,7 @@ d3.csv("data/all_actions.csv", function(error, data) {
             var others = svg.selectAll(".arc").filter(function(el) {
                 return this != current
             });
-            others.selectAll("path").style('opacity', 0.8);
+            others.selectAll("path").style('opacity', 0.60);
         })
         .on('mouseout', function() {
             var current = this;
@@ -108,9 +114,11 @@ d3.csv("data/all_actions.csv", function(error, data) {
         })
         .on("mouseout", function(d){
             tooltip_arc.style("display", "none");
-        });
+        })
+        .on("click", function(d){
+           svg.append("circle");
 
-        //.attr("preserveAspetRatio", "xMinYMin");
+        });
 
 	  g.append("text")
 	      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
@@ -143,4 +151,42 @@ d3.csv("data/all_actions.csv", function(error, data) {
                 .attr('y', legendRectSize - legendSpacing)
                 .text(function(d) { return d.action; });
 
+
   });
+
+  $( "#slider" ).slider({
+      value: 0,
+      min: 0,
+      max: 3,
+      step: 1,
+      slide: function( event, ui ) {
+          update(ui.value);
+          console.log(ui.value);
+        }
+  })
+  .each(function() {
+
+    //
+    // Add labels to slider whose values
+    // are specified by min, max and whose
+    // step is set to 1
+    //
+
+    // Get the options for this slider
+    var opt = $(this).data().uiSlider.options;
+
+    // Get the number of possible values
+    var vals = opt.max - opt.min;
+
+    // Space out values
+    for (var i = 0; i <= vals; i++) {
+
+      var el = $('<label>'+dataStructure[i].label+'</label>').css('left',(i/vals*100)+'%');
+
+      $( "#slider" ).append(el);
+
+    }
+
+  });
+
+  update(0);
