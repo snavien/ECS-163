@@ -28,23 +28,27 @@ var svg = d3.select("#donutchart")
   	.append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-var tooltip = d3.select("body")
+
+var tooltip_arc = d3.select("#donutchart")
               .append('div')
               .attr('class', 'label');
-tooltip.append('div')
+tooltip_arc.append('div')
        .attr('class', 'label');
 
-tooltip.append('div')
+tooltip_arc.append('div')
        .attr('class', 'count');
 
-tooltip.append('div')
+tooltip_arc.append('div')
       .attr('class', 'percent');
 
 
 d3.csv("data/all_actions.csv", function(error, data) {
     if (error) throw error;
-
-		console.log("!");
+    var total = 0;
+		data.forEach(function(d){
+      d.count = +d.count;
+      total = total + d.count;
+    });
 	  var g = svg.selectAll(".arc")
 	      .data(pie(data))
 	    	.enter().append("g")
@@ -58,18 +62,13 @@ d3.csv("data/all_actions.csv", function(error, data) {
               .style("stroke", "white")
               .style("stroke-width", "2")
               .attr("class", "path");
-    // var path = svg.selectAll('path')
-    path.on("mouseover", function(d, i){
-          console.log("pooop");
-          var total = d3.sum(data.map(function(d) {
-            return d.count;
-          }));
-          console.log("!");
-          var percent = Math.round(1000 * d.count / total) / 10;
-          tooltip.select('.label').html(d.label);
-          tooltip.select('.count').html(d.count);
-          tooltip.select('.percent').html(percent + '%');
-          tooltip.style('display', 'block');
+
+    path.on("mouseover", function(d){
+          var percent = Math.round(1000 * d.data.count / total) / 10;
+          tooltip_arc.select('.label').html(d.label);
+          tooltip_arc.select('.count').html(d.count);
+          tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
+          tooltip_arc.style('display', 'block');
         });
 
 	  g.append("text")
