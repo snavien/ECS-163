@@ -63,12 +63,17 @@ d3.csv("data/all_actions.csv", function(error, data) {
               .style("stroke-width", "2")
               .attr("class", "path");
 
-    path.on("mouseover", function(d){
+    path.on("mousemove", function(d){
           var percent = Math.round(1000 * d.data.count / total) / 10;
           tooltip_arc.select('.label').html(d.label);
           tooltip_arc.select('.count').html(d.count);
-          tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
-          tooltip_arc.style('display', 'block');
+          var perc = tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
+          tooltip_arc.style('display', 'inline-block');
+          perc.style("left", d3.event.pageX-1555+"px");
+          perc.style("top", d3.event.pageY-25+"px")
+        })
+        .on("mouseout", function(d){
+            tooltip_arc.style("display", "none");
         });
 
 	  g.append("text")
