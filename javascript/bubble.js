@@ -13,7 +13,7 @@ var base_height = $(window).height();
 //TODO: http://stackoverflow.com/questions/13280809/jquery-resize-on-window-scale-up-or-scale-down
 var margin = {top: 20, right: 20, bottom: 60, left: 250},
 				  width = 1000 - margin.left - margin.right - 100,
-				  height = 600 - margin.top - margin.bottom - 100;
+				  height = 700 - margin.top - margin.bottom - 100;
 
 
 // set the ranges
@@ -32,7 +32,7 @@ var yAxis = d3.svg.axis()
 			    .ticks(10);
 
 // add the svg canvas to the div with id = bubblechart
-var svg = d3.select("#bubblechart").append("svg")
+var bvis = d3.select("#bubblechart").append("svg")
 	    	.attr("width", width + margin.left + margin.right)
 	    	.attr("height", height + margin.top + margin.bottom)
 	    	.attr("class", "bubblechart_svg")
@@ -40,7 +40,7 @@ var svg = d3.select("#bubblechart").append("svg")
 	    	//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // this div is used for the tooltip
-var div = d3.select("#bubblechart").append("div")
+var div = bvis.append("div")
 		    .attr("class", "tooltip")
 		    .style("opacity", 0);
 
@@ -134,9 +134,9 @@ d3.csv("data/print3.csv", function(error, data) {
 	y.domain([max,min]);
 
 	// add the axes
-	svg.append("g")
+	bvis.append("g")
 	  	.attr("class", "x axis")
-			.attr("transform", "translate(0,400)")
+			.attr("transform", "translate(0," + (height + 39) +")")
 	  	.call(xAxis)
 			.append("text")
 			.attr("x", width/2)
@@ -148,7 +148,7 @@ d3.csv("data/print3.csv", function(error, data) {
 			// .style("text-anchor", "end")
 			// .text("Time");
 
-	svg.append("g")
+	bvis.append("g")
 	  .attr("class", "y axis")
 		.call(yAxis)
 		.append("text")
@@ -161,49 +161,47 @@ d3.csv("data/print3.csv", function(error, data) {
 	console.log(player_data[0].server_id);
 	console.log(player_data[0].start_t);
 
+	   
 	// add the dots
-	svg.selectAll(".dot")
-		.append("g")
+	var dots = bvis.selectAll(".dot")
 		.data(player_data)
 		.enter().append("circle")
-			.attr("class", "dot")
-      .attr("r", function(d){ return d.stop_t - d.start_t; })
-			.attr("fill", function(d){ if(d.key == " KilledBy") return "red"; else return "blue";})
-      .attr("cy", function(d) {
-				console.log(d.player_a);
+		.attr("class", "dot")
+      	.attr("r", function(d){ return d.stop_t - d.start_t; })
+		.attr("fill", function(d){ if(d.key == " KilledBy") return "red"; else return "blue";})
+      	.attr("cy", function(d) {
 				return x(d.player_a); })
-			.attr("fill-opacity", 0.70)
-      .attr("cx", function(d) { return y(d.start_t/1000); })
-
-			.on("mouseover", function(d) {
-				d3.select(this).attr("r", d3.select(this).attr("r") * 1 * 2);
-				if(d.key == " KilledBy"){
-					div.transition()
-						.duration(200)
-						.style("opacity", .95);
-					div.html("killed " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
-						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
-						.style("top", (d3.event.pageY ) + "px")
-						.style("font", "9.5px arial, serif")
-				}
-				else{
-					div.transition()
-						.duration(200)
-						.style("opacity", .95);
-					div.html("chatted with " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
-						.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
-						.style("top", (d3.event.pageY - 28) + "px")
-						.style("font", "9.5px arial, serif")
-				}
-
-				})
-			.on("mouseout", function(d) {
-				d3.select(this).attr("r", (d.stop_t - d.start_t));
+		.attr("fill-opacity", 0.70)
+      	.attr("cx", function(d) { return y(d.start_t/1000); })
+		.on("mouseover", function(d) {
+			d3.select(this).attr("r", d3.select(this).attr("r") * 1 * 2);
+			if(d.key == " KilledBy"){
 				div.transition()
-                	.duration(500)
-                	.style("opacity", 0);
-				});
-	console.log("done");
+					.duration(200)
+					.style("opacity", .95);
+				div.html("killed " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
+					.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
+					.style("top", (d3.event.pageY ) + "px")
+					.style("font", "9.5px arial, serif")
+			}
+			else{
+				div.transition()
+					.duration(200)
+					.style("opacity", .95);
+				div.html("chatted with " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
+					.style("left", d3.event.pageX + "px")
+					.style("top", (d3.event.pageY - 28) + "px")
+					.style("font", "9.5px arial, serif")
+			}
+
+			})
+		.on("mouseout", function(d) {
+			d3.select(this).attr("r", (d.stop_t - d.start_t));
+			div.transition()
+            	.duration(500)
+            	.style("opacity", 0);
+			});
+		bvis.append(dots)
 });
 
 // this gets the total time spent on each key

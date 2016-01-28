@@ -31,7 +31,7 @@ var svg = d3.select("#donutchart")
     .attr("transform", "translate(" + (width + 50) / 2 + "," + (height + 40) / 2 + ")");
 
 
-var tooltip_arc = d3.select("#donutchart")
+var tooltip_arc = svg
               .append('div')
               .attr('class', 'label');
 tooltip_arc.append('div')
@@ -80,7 +80,7 @@ d3.csv("data/all_actions.csv", function(error, data) {
               .style("stroke", "white")
               .style("stroke-width", "2")
               .attr("class", "path")
-              .attr("transform", "translate(400,0)")
+              //.attr("transform", "translate(400,0)")
               .on("mouseenter", function(d) {
                 d3.select(this)
                    .attr("stroke","white")
