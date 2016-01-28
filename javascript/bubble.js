@@ -35,19 +35,19 @@ var yAxis = d3.svg.axis()
 var svg = d3.select("#bubblechart").append("svg")
 	    	.attr("width", width + margin.left + margin.right)
 	    	.attr("height", height + margin.top + margin.bottom)
-	    	.attr("class", "barchart_svg")
-	  		.append("g")
-	    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	    	.attr("class", "bubblechart_svg")
+	  		.append("g");
+	    	//.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // this div is used for the tooltip
-var div = d3.select("body").append("div")
+var div = d3.select("#bubblechart").append("div")
 		    .attr("class", "tooltip")
 		    .style("opacity", 0);
 
-// Load the data, process it, and display it with a bar chart.
+// Load the data, process it, and display it with a bubble chart.
 // You can't load the fullsize file, so you'll need to do some
 // preprocessing to break the data up or aggregate it
-d3.csv("data/print.csv", function(error, data) {
+d3.csv("data/print3.csv", function(error, data) {
 	if (error) throw error;
 	// var player_data = data.filter(function(d) {
 	// 	return d.player_b === "00040857941a98d183a9ffcc5efc12a5e73a91ad")
@@ -55,51 +55,63 @@ d3.csv("data/print.csv", function(error, data) {
 
 	//make a selection box
 	//create unique list of player b's
-	var player_b = [], count = 0;
-	var u = {};
-	for(var i = 0; i < data.length; i++){
-	  if(u.hasOwnProperty(data[i].player_b)) {
-	     continue;
-	  }
-	  player_b.push(data[i].player_b);
-		count++;
-	  u[data[i].player_b] = 1;
- 	}
 
-	console.log(player_b);
+
+	// var player_b = [], count = 0;
+	// var u = {};
+	// for(var i = 0; i < data.length; i++){
+	//   if(u.hasOwnProperty(data[i].player_b)) {
+	//      continue;
+	//   }
+	//   player_b.push(data[i].player_b);
+	// 	count++;
+	//   u[data[i].player_b] = 1;
+ // 	}
+	//
+	//
+
+
+	console.log("BOOP");
 	var player_data = [];
 
-	var select = d3.select('body')
-							.append('select')
-							.attr('class', 'select_pb')
-							.on('change', onchange(player_data));
-	var option = select
-							.selectAll('option')
-							.data(player_b).enter()
-							.append('option')
-							.text(function(d) {return d;});
-	function onchange(player_data){
-		selectValue = d3.select('select').property('value');
-		d3.select('body')
-			.append('p')
-			.text(selectValue + ' is the last selected option.');
+	// var select = d3.select('body')
+	// 						.append('select')
+	// 						.attr('class', 'select_pb')
+	// 						.on('change', onchange(player_data));
+	// var option = select
+	// 						.selectAll('option')
+	// 						.data(player_b).enter()
+	// 						.append('option')
+	// 						.text(function(d) {return d;});
+	// function onchange(player_data){
+	// 		selectValue = d3.select('select').property('value');
+	// 		d3.select('body')
+	// 			.append('p')
+	// 			.text(selectValue + ' is the last selected option.');
+	// 		console.log(selectValue);
+	// 		for(var i = 0; i < data.length; i++){
+	// 			var pb = d3.select('select').property('value');
+	// 			// console.log(pb);
+	// 			if(data[i].player_b == selectValue)//" "+ pb)
+	// 			{
+	// 				player_data[count] = data[i];
+	// 				count++;
+	// 			}
+	// 		}
+	//
+	// 	};
+	// };
+	var player_data = [], count = 0;
+	for(var i = 0; i < data.length; i++){
+		if(data[i].player_b == ' 00040857941a98d183a9ffcc5efc12a5e73a91ad')
+		{
+			player_data[count] = data[i];
+			count++;
+		}
+	}
 
-			return function set_pd(){
 
-			count = 0;
-			alert(player_data);
 
-		};
-	};
-  for(var i = 0; i < data.length; i++){
-    var pb = d3.select('select').property('value');
-    console.log(pb);
-    if(data[i].player_b == " dd76e3ee2164f08a6dfe99e3bc155bbb4ff7dc32")//" "+ pb)
-    {
-      player_data[count] = data[i];
-      count++;
-    }
-  }
 
 	// get the total time spent on each key
 	var max = d3.max(player_data, function(d) {
