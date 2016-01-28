@@ -36,20 +36,20 @@ var yAxis = d3.svg.axis()
 			    .orient("left")
 			    .ticks(10);
 
-// add the svg canvas to the div with id = barchart
-var svg = d3.select("#barchart").append("svg")
+// add the svg canvas to the div with id = bubblechart
+var svg = d3.select("#bubblechart").append("svg")
 	    	.attr("width", width + margin.left + margin.right)
 	    	.attr("height", height + margin.top + margin.bottom)
-	    	.attr("class", "barchart_svg")
+	    	.attr("class", "bubblechart_svg")
 	  		.append("g")
 	    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // this div is used for the tooltip
-var div = d3.select("body").append("div")
+var div = d3.select("#bubblechart").append("div")
 		    .attr("class", "tooltip")
 		    .style("opacity", 0);
 
-// Load the data, process it, and display it with a bar chart.
+// Load the data, process it, and display it with a bubble chart.
 // You can't load the fullsize file, so you'll need to do some
 // preprocessing to break the data up or aggregate it
 d3.csv("data/print3.csv", function(error, data) {
@@ -158,7 +158,11 @@ d3.csv("data/print3.csv", function(error, data) {
 	console.log(player_data[0].server_id);
 	console.log(player_data[0].start_t);
 
+<<<<<<< Updated upstream
 	// add the dots
+=======
+	// add the bubbles
+>>>>>>> Stashed changes
 	svg.selectAll(".dot")
 		.data(player_data)
 		.enter().append("circle")
