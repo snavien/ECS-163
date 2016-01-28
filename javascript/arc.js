@@ -7,8 +7,7 @@ console.log("here");
 var min_cnt = 0,
 		max_cnt = 0;
 var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
+    .range(["purple", "black"]);
 //var color = d3.scale.linear.do-main([min_cnt, max_cnt]).range("red", "black");
 
 var arc = d3.svg.arc()
