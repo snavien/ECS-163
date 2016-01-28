@@ -52,7 +52,21 @@ d3.csv("data/all_actions.csv", function(error, data) {
 	  var g = svg.selectAll(".arc")
 	      .data(pie(data))
 	    	.enter().append("g")
-	      .attr("class", "arc");
+	      .attr("class", "arc")
+        .on('mouseover', function() {
+            var current = this;
+            var others = svg.selectAll(".arc").filter(function(el) {
+                return this != current
+            });
+            others.selectAll("path").style('opacity', 0.8);
+        })
+        .on('mouseout', function() {
+            var current = this;
+            var others = svg.selectAll(".arc").filter(function(el) {
+                return this != current
+            });
+            others.selectAll("path").style('opacity', 1);
+        });
 
     var arcOver = d3.svg.arc()
         .outerRadius(radius + 10)
