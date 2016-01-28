@@ -1,7 +1,7 @@
 /** OVERVIEW CHART**/
 //TODO: Create overview of actions or servers
-var width = 360,
-    height = 360,
+var width = 500,
+    height = 500,
     radius = Math.min(width, height) / 2;
 console.log("here");
 var min_cnt = 0,
@@ -15,7 +15,7 @@ var color = d3.scale.category20b();
 
 var arc = d3.svg.arc()
     .outerRadius(radius - 10)
-    .innerRadius(radius - 70);
+    .innerRadius(radius - 90);
 
 var pie = d3.layout.pie()
     .value(function(d) { return d.count; })
@@ -23,10 +23,10 @@ var pie = d3.layout.pie()
 
 var svg = d3.select("#donutchart")
     .append("svg")
-    .attr("width", width)
-    .attr("height", height)
+    .attr("width", width + 100)
+    .attr("height", height + 150)
   	.append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    .attr("transform", "translate(" + (width + 50) / 2 + "," + (height + 40) / 2 + ")");
 
 
 var tooltip_arc = d3.select("#donutchart")
@@ -54,6 +54,9 @@ d3.csv("data/all_actions.csv", function(error, data) {
 	    	.enter().append("g")
 	      .attr("class", "arc");
 
+    var arcOver = d3.svg.arc()
+        .outerRadius(radius + 10)
+        .innerRadius(radius - 70);
 
 	  var path = g.append("path")
               .data(pie(data))
@@ -61,20 +64,39 @@ d3.csv("data/all_actions.csv", function(error, data) {
       	      .style("fill", function(d, i) {return color(i); })
               .style("stroke", "white")
               .style("stroke-width", "2")
-              .attr("class", "path");
+              .attr("class", "path")
+              .on("mouseenter", function(d) {
+                d3.select(this)
+                   .attr("stroke","white")
+                   .transition()
+                   .duration(500)
+                   .attr("d", arcOver)
+                   .attr("stroke-width",9);
+               })
+               .on("mouseleave", function(d) {
+                   d3.select(this)
+                      .transition()
+                      .attr("d", arc)
+                      .attr("stroke","none");
+               });
+
 
     path.on("mousemove", function(d){
           var percent = Math.round(1000 * d.data.count / total) / 10;
-          tooltip_arc.select('.label').html(d.label);
+          var lab = tooltip_arc.select('.label').html(d.label);
+
           tooltip_arc.select('.count').html(d.count);
           var perc = tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
           tooltip_arc.style('display', 'inline-block');
           perc.style("left", d3.event.pageX-1555+"px");
-          perc.style("top", d3.event.pageY-25+"px")
+          perc.style("top", d3.event.pageY-25+"px");
+          perc.style("opacity", ".95");
         })
         .on("mouseout", function(d){
             tooltip_arc.style("display", "none");
         });
+
+        //.attr("preserveAspetRatio", "xMinYMin");
 
 	  g.append("text")
 	      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
@@ -96,7 +118,8 @@ d3.csv("data/all_actions.csv", function(error, data) {
                   var vert = i * height - offset;
                   return 'translate(' + horz + ',' + vert + ')';
                 });
-    legend.append('rect')                                                          .attr('width', legendRectSize)
+    legend.append('rect')
+         .attr('width', legendRectSize)
          .attr('height', legendRectSize)
          .style('fill', color)
          .style('stroke', color);
@@ -106,10 +129,4 @@ d3.csv("data/all_actions.csv", function(error, data) {
                 .attr('y', legendRectSize - legendSpacing)
                 .text(function(d) { return d.action; });
 
-    percent(data);
   });
-
-  function percent(d) {
-    var sum = sum + int(d.count);
-    console.log(sum);
-  }
