@@ -82,12 +82,21 @@ d3.csv("data/all_actions.csv", function(error, data) {
               .attr("class", "path")
               //.attr("transform", "translate(400,0)")
               .on("mouseenter", function(d) {
-                d3.select(this)
-                   .attr("stroke","white")
-                   .transition()
-                   .duration(500)
-                   .attr("d", arcOver)
-                   .attr("stroke-width",9);
+	                d3.select(this)
+	                   .attr("stroke","white")
+	                   .transition()
+	                   .duration(500)
+	                   .attr("d", arcOver)
+	                   .attr("stroke-width",9);
+				  var percent = Math.round(1000 * d.data.count / total) / 10;
+				  var lab = tooltip_arc.select('.label').html(d.label);
+				
+				  tooltip_arc.select('.count').html(d.count);
+				  var perc = tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
+				  tooltip_arc.style('display', 'inline-block');
+				  perc.style("left", d3.event.pageX+"px");
+				  perc.style("top", d3.event.pageY+"px");
+				  perc.style("opacity", ".95");
                })
                .on("mouseleave", function(d) {
                    d3.select(this)
@@ -98,22 +107,15 @@ d3.csv("data/all_actions.csv", function(error, data) {
 
 
     path.on("mousemove", function(d){
-          var percent = Math.round(1000 * d.data.count / total) / 10;
-          var lab = tooltip_arc.select('.label').html(d.label);
 
-          tooltip_arc.select('.count').html(d.count);
-          var perc = tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
-          tooltip_arc.style('display', 'inline-block');
-          perc.style("left", d3.event.pageX+"px");
-          perc.style("top", d3.event.pageY+"px");
-          perc.style("opacity", ".95");
         })
         .on("mouseout", function(d){
             tooltip_arc.style("display", "none");
         })
         .on("click", function(d){
-           svg.append("circle");
-
+           svg.append("circle")
+           .attr("r", 10)
+           .attr("transform", "translate("+ (radius*(-1) - 50 ) + ",0)");
         });
 
 	  g.append("text")

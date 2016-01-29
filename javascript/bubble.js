@@ -47,78 +47,54 @@ var div = bvis.append("div")
 // Load the data, process it, and display it with a bubble chart.
 // You can't load the fullsize file, so you'll need to do some
 // preprocessing to break the data up or aggregate it
-d3.csv("data/print3.csv", function(error, data) {
+
+var player_b; 
+d3.csv("data/top10.csv", function(error, topdata){
+		console.log(topdata);
+		player_b = topdata;
+	});
+console.log(player_b);
+d3.csv("data/print.csv", function(error, data) {
 	if (error) throw error;
-	// var player_data = data.filter(function(d) {
-	// 	return d.player_b === "00040857941a98d183a9ffcc5efc12a5e73a91ad")
-	// });
 
-	//make a selection box
-	//create unique list of player b's
-
-
-	// var player_b = [], count = 0;
-	// var u = {};
-	// for(var i = 0; i < data.length; i++){
-	//   if(u.hasOwnProperty(data[i].player_b)) {
-	//      continue;
-	//   }
-	//   player_b.push(data[i].player_b);
-	// 	count++;
-	//   u[data[i].player_b] = 1;
- // 	}
-	//
-	//
-
-
-	console.log("BOOP");
-	var player_data = [];
-
-	// var select = d3.select('body')
-	// 						.append('select')
-	// 						.attr('class', 'select_pb')
-	// 						.on('change', onchange(player_data));
-	// var option = select
-	// 						.selectAll('option')
-	// 						.data(player_b).enter()
-	// 						.append('option')
-	// 						.text(function(d) {return d;});
-	// function onchange(player_data){
-	// 		selectValue = d3.select('select').property('value');
-	// 		d3.select('body')
-	// 			.append('p')
-	// 			.text(selectValue + ' is the last selected option.');
-	// 		console.log(selectValue);
-	// 		for(var i = 0; i < data.length; i++){
-	// 			var pb = d3.select('select').property('value');
-	// 			// console.log(pb);
-	// 			if(data[i].player_b == selectValue)//" "+ pb)
-	// 			{
-	// 				player_data[count] = data[i];
-	// 				count++;
-	// 			}
-	// 		}
-	//
-	// 	};
-	// };
 	var player_data = [], count = 0;
 	for(var i = 0; i < data.length; i++){
-		if(data[i].player_b == ' 00040857941a98d183a9ffcc5efc12a5e73a91ad')
+		if(data[i].player_b == '')
 		{
 			player_data[count] = data[i];
 			count++;
 		}
 	}
 
+	
+	
+	console.log(player_b);
+	
+	var select = bvis
+				.append("select")
+				.attr("class", "select_pb")
+				.on('change', onchange);
+	var option = select
+				.selectAll('option')
+				.data(player_b).enter()
+				.append('option')
+				.text(function(d) {return d;});
+	function onchange(){
+			selectValue = d3.select('select').property('value');
+			d3.select('body')
+			   .append('p')
+			   .text(selectValue + ' is the last selected option.');
+			   return selectValue;
+			};
+	
+
 	// get the total time spent on each key
 	var max = d3.max(player_data, function(d) {
 		return +d.stop_t/1000;
-//  	return d3.max(d.stop_t, function(e) { return d3.max(e); });
 	});
 
 	var min = d3.min(player_data, function(d) {
 		return +d.start_t/1000;
-		//return d3.min(d.start_t, function(e) { return d3.min(e); });
 	});
 	console.log(max);
 	console.log(min);
@@ -135,10 +111,10 @@ d3.csv("data/print3.csv", function(error, data) {
 	// add the axes
 	bvis.append("g")
 	  	.attr("class", "x axis")
-		.attr("transform", "translate(0," + (height - margin.top * 4) +")")
+		.attr("transform", "translate(10," + (height - margin.top * 4 - 10) +")")
 	  	.call(xAxis)
 			.append("text")
-			.attr("x", width/2)
+			.attr("x", width/4)
 			.attr("y", 30)
 			.style("text-anchor", "middle")
 			.text("Time (1000m)");
@@ -151,7 +127,6 @@ d3.csv("data/print3.csv", function(error, data) {
 	  .attr("class", "y axis")
 		.call(yAxis)
 		.append("text")
-	//	.attr("transform", "translate(-500,0)")
 		.attr("y", -40)
 		.attr("dy", "3em")
 		.style("text-anchor", "end")
@@ -179,7 +154,7 @@ d3.csv("data/print3.csv", function(error, data) {
 					.duration(200)
 					.style("opacity", .95);
 				div.html("killed " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
-					.style("left", (x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
+					.style("left", (d3.event.pageX) +"px")//(x(d.key) + x.rangeBand() + x.rangeBand()/2) + "px")
 					.style("top", (d3.event.pageY ) + "px")
 					.style("font", "9.5px arial, serif")
 			}
@@ -189,7 +164,7 @@ d3.csv("data/print3.csv", function(error, data) {
 					.style("opacity", .95);
 				div.html("chatted with " + d.player_a + " for " + (d.stop_t - d.start_t) + "min")
 					.style("left", d3.event.pageX + "px")
-					.style("top", (d3.event.pageY - 28) + "px")
+					.style("top", (d3.event.pageY) + "px")
 					.style("font", "9.5px arial, serif")
 			}
 

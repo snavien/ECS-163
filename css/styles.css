@@ -32,40 +32,38 @@ body {
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
-		box-shadow: 0 0 5px #999999;
+	box-shadow: 0 0 5px #999999;
 }
-.label{
+/*.label{
 	opacity: .96;
-}
+}*/
 
-.tooltip_arc {
+/*.tooltip_arc {
 	      background: #eee;
 				box-shadow: 0 0 5px #999999;
         color: #333;
         display: none;
         font-size: 12px;
-        /*left: 130px;                                                    */
+        left: 130px;                                                    
         padding: 10px;
 				position: absolute;
         text-align: center;
-        /*top: 95px;                                                      */
+        top: 95px;                                                      
         width: 80px;
 				opacity:.95;
-      }
+      }*/
 
-.tooltip {
+/*.tooltip {
 	      background: #eee;
 				box-shadow: 0 0 5px #999999;
         color: #333;
         display: none;
         font-size: 12px;
-        /*left: 130px;                                                    */
+        left: 130px;                                                    
         padding: 10px;
 				position: absolute;
         text-align: center;
-        /*top: 95px;                                                      */
+        top: 95px;                                                      
         width: 80px;
 				opacity:.95;
-      }
-
-
+      }*/
