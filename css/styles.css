@@ -34,6 +34,12 @@ body {
     pointer-events: none;
 	box-shadow: 0 0 5px #999999;
 }
+
+.select_pb{
+	position:absolute;
+	left: 100px;
+	top: 700px;
+}
 /*.label{
 	opacity: .96;
 }*/

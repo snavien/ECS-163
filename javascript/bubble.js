@@ -48,45 +48,60 @@ var div = bvis.append("div")
 // You can't load the fullsize file, so you'll need to do some
 // preprocessing to break the data up or aggregate it
 
-var player_b; 
+var pbs; 
 d3.csv("data/top10.csv", function(error, topdata){
 		console.log(topdata);
-		player_b = topdata;
+		pbs = topdata;
 	});
-console.log(player_b);
+console.log(pbs);
 d3.csv("data/print.csv", function(error, data) {
 	if (error) throw error;
 
 	var player_data = [], count = 0;
-	for(var i = 0; i < data.length; i++){
-		if(data[i].player_b == '')
+	
+	console.log(pbs);
+	var kill = [], chat = [], cnt1 = 0, cnt2 = 0;
+	for(var i = 0; i < pbs.length; i++){
+		if(pbs[i].key == ' Chat')
 		{
-			player_data[count] = data[i];
-			count++;
+			chat[cnt1] = pbs[i].player_b;
+			cnt1++;
+		}
+		if(pbs[i].key == ' KilledBy')
+		{
+			kill[cnt2] = pbs[i].player_b;
+			cnt2++;
 		}
 	}
 
+	console.log(kill);
+	console.log(chat);
 	
-	
-	console.log(player_b);
-	
-	var select = bvis
+	var select = d3.select("body")
 				.append("select")
 				.attr("class", "select_pb")
 				.on('change', onchange);
 	var option = select
 				.selectAll('option')
-				.data(player_b).enter()
+				.data(kill).enter()
 				.append('option')
 				.text(function(d) {return d;});
 	function onchange(){
-			selectValue = d3.select('select').property('value');
-			d3.select('body')
-			   .append('p')
-			   .text(selectValue + ' is the last selected option.');
-			   return selectValue;
-			};
+		selectValue = d3.select('select').property('value');
+		for(var i = 0; i < data.length; i++){
+
+			if(data[i].player_b == " " + selectValue)
+			{
+				console.log("hi");
+				player_data[count] = data[i];
+				count++;
+			}
+		}
+
+	   	return selectValue;
+	};
 	
+	console.log(player_data);
 
 	// get the total time spent on each key
 	var max = d3.max(player_data, function(d) {
