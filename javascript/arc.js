@@ -93,7 +93,7 @@ d3.csv("data/all_actions.csv", function(error, data) {
 				
 				  tooltip_arc.select('.count').html(d.count);
 				  var perc = tooltip_arc.select('.percent').html(d.data.action + '<p>' + percent + '%');
-				  tooltip_arc.style('display', 'inline-block');
+				  tooltip_arc.style('display', 'block');
 				  perc.style("left", d3.event.pageX+"px");
 				  perc.style("top", d3.event.pageY+"px");
 				  perc.style("opacity", ".95");
@@ -112,11 +112,6 @@ d3.csv("data/all_actions.csv", function(error, data) {
         .on("mouseout", function(d){
             tooltip_arc.style("display", "none");
         })
-        .on("click", function(d){
-           svg.append("circle")
-           .attr("r", 10)
-           .attr("transform", "translate("+ (radius*(-1) - 50 ) + ",0)");
-        });
 
 	  g.append("text")
 	      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
