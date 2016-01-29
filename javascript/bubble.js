@@ -153,9 +153,22 @@ d3.csv("data/print.csv", function(error, data) {
 		// y goes from 0 to the max value in times
 		y.domain([max,min]);
 	
+		var axes = d3.selectAll('.xaxis');
+
+   		if(axes){
+			console.log(axes);
+		   	axes.remove();
+		}
+		
+		var axes2 = d3.selectAll('.yaxis');
+
+   		if(axes2){
+			console.log(axes2);
+		   	axes2.remove();
+		}
 		// add the axes
 		bvis.append("g")
-		  	.attr("class", "x axis")
+		  	.attr("class", "xaxis")
 			.attr("transform", "translate(10," + (height - margin.top + 10) +")")
 		  	.call(xAxis)
 				.append("text")
@@ -165,7 +178,7 @@ d3.csv("data/print.csv", function(error, data) {
 				.text("Time (1000m)");
 	
 		bvis.append("g")
-		  .attr("class", "y axis")
+		  .attr("class", "yaxis")
 			.call(yAxis)
 			.append("text")
 			.attr("y", -40)
@@ -180,7 +193,6 @@ d3.csv("data/print.csv", function(error, data) {
    		if(children){
 			console.log(children);
 		   	children.remove();
-
 		}
 		// add the dots
 		var dots = bvis.selectAll(".dot")
