@@ -1,6 +1,7 @@
 import org.gicentre.treemappa.*;
 import org.gicentre.handy.*;
 import org.gicentre.utils.colour.*;
+<<<<<<< HEAD
 import org.gicentre.utils.move.*;    // For the ZoomPan class.
 
 // Draws a complex treemap with appearance customisation and zoomable display.
@@ -46,10 +47,21 @@ void setup()
 
   
   // Load the data and build the treemap
+=======
+
+
+HandyRenderer h;
+
+void setup()
+{
+  size(300, 200);
+  h = new HandyRenderer(this);
+>>>>>>> 8231c33b96c46eedff0da1b4d4ab059cc4a9de6b
 }
 
 void draw()
 {
+<<<<<<< HEAD
     background(255);
     zoomer.transform();
 
@@ -63,3 +75,14 @@ void draw()
 //  
   pTreeMappa.draw();
 }
+=======
+
+  background(235,215,182);
+  fill(206, 76, 52);
+  strokeWeight(2);
+  h.rect(75,50,150,100);
+  h.setIsHandy(false);
+  //h.setSeed();
+
+}
+>>>>>>> 8231c33b96c46eedff0da1b4d4ab059cc4a9de6b
