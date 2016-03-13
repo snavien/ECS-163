@@ -22,3 +22,7 @@ void draw()
   //h.setSeed();
 
 }
+
+void mouseClicked()
+{
+}
