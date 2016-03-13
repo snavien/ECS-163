@@ -14,5 +14,10 @@ void setup()
 void draw()
 {
   background(235,215,182);
+  fill(206, 76, 52);
+  strokeWeight(2);
   h.rect(75,50,150,100);
+  h.setIsHandy(false);
+  //h.setSeed();
+
 }
