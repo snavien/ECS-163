@@ -13,6 +13,7 @@ void setup()
 
 void draw()
 {
+
   background(235,215,182);
   fill(206, 76, 52);
   strokeWeight(2);
