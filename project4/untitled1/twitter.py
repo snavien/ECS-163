@@ -19,14 +19,13 @@ class BuzzWord:
         row = []
         for v in vars:
             row.append(v)
-        print(row)
         return row
 
 
 def search(hashtag):
     with open(hashtag + '.csv', 'w', newline='', encoding='utf-8') as csvfile:
         print(hashtag)
-        writer = csv.writer(csvfile, delimiter=',', quotechar='|')
+        writer = csv.writer(csvfile, delimiter='\t', quotechar='|')
         print("Header")
         writer.writerow(['Keyword', 'Screen_Name', 'Text', 'Created_At_Year', 'Created_At_Month', 'Retweeted', 'Retweet_Count', 'Favorited', 'Favorite_Count'])
 
@@ -63,14 +62,32 @@ def search(hashtag):
             print(e)
 
 
+def aggregate_hashtags(hashtags):
+       with open('aggregate.csv',"w", encoding='utf-8') as result:
+         wtr = csv.writer(result)
+         wtr.writerow(['#Label', 'Total_Num_Tweets', 'Total_Num_Retweets', 'Total_Num_Favorites'])
+
+         for h in hashtags:
+            with open(h + '.csv', 'r', encoding='utf-8') as source:
+                rdr = csv.reader(source, delimiter='\t')
+                next(rdr)
+                tot_tweets = sum(1 for r in rdr)
+                tot_retweets = sum(int(r[6]) for r in rdr)
+                tot_fav = sum(int(r[8]) for r in rdr)
+                wtr.writerow([h, tot_tweets, tot_retweets, tot_fav])
 def main():
     print("starting...")
-    #ILookLikeAnEngineer", "#AddWomen", "#GirlsWhoCode", "#BeAGirlWhoCodes", "StemWomen", "#StemGirls", "#LikeAGirl",
-    # hashtags = ["#DistractinglySexy", "#GirlsWithToys", "#WomenInTech"]
-    hashtags =["#StemWomen"]
-    for hashtag in hashtags:
-        search(hashtag)
-    print("done")
+    hashtags = ["#ILookLikeAnEngineer", "#AddWomen", "#GirlsWhoCode", "#BeAGirlWhoCodes"]
+    hashtags1 = ["#StemWomen", "#StemGirls", "#LikeAGirl", "#DistractinglySexy", "#GirlsWithToys", "#WomenInTech"]
+    hashtags3 = ["#ILookLikeAnEngineer", "#AddWomen", "#GirlsWhoCode", "#BeAGirlWhoCodes", "#StemWomen", "#StemGirls", "#LikeAGirl", "#DistractinglySexy", "#GirlsWithToys", "#WomenInTech"]
+    # for hashtag in hashtags:
+    #     search(hashtag)
+    # print("done")
+    # #
+    # for hashtag in hashtags1:
+    #     search(hashtag)
+    # print("done")
+    aggregate_hashtags(hashtags3)
 # look for hashtags and MCS
 # hash by creation date -> MCS
 # maybe check if it's been retweeted
