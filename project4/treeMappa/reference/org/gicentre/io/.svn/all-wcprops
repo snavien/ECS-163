@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/15/trunk/reference/org/gicentre/io
+END
+package-frame.html
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/package-frame.html
+END
+package-tree.html
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/package-tree.html
+END
+DbaseFileWriter.html
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/DbaseFileWriter.html
+END
+ShapefileWriter.html
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/ShapefileWriter.html
+END
+package-use.html
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/package-use.html
+END
+package-summary.html
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/package-summary.html
+END
+DbaseFileHeader.html
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/DbaseFileHeader.html
+END
+DbaseFileWriter.FieldFormatter.html
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/27/trunk/reference/org/gicentre/io/DbaseFileWriter.FieldFormatter.html
+END
