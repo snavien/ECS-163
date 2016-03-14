@@ -5,6 +5,8 @@ something is not quite right.
 
 import wordcram.*;
 Table hashtags;
+import wordcram.text.*;
+
 
 Word lastClickedWord; // The word that was under the user's last click
 WordCram wordcram;
@@ -38,7 +40,7 @@ void setup()
   // Pass in the words to draw.
     .fromWords(wordArray)
     .sizedByWeight(8, 70);
-;
+    ;
  
 
 }
