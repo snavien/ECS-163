@@ -1,69 +1,31 @@
-import org.gicentre.treemappa.*;
-import org.gicentre.handy.*;
-import org.gicentre.utils.colour.*;
-import org.gicentre.utils.move.*;    // For the ZoomPan class.
+/*
+This is as basic as it gets.  If you can't get this running, 
+something is not quite right.
+*/
 
-// Draws a complex treemap with appearance customisation and zoomable display.
-// Jo Wood, giCentre
-// V1.4, 23rd March, 2011.
+import wordcram.*;
+Table hashtags;
+hashtags = loadTable("aggregate.csv", "header");
 
-PTreeMappa pTreeMappa;
-ZoomPan zoomer;
+size(1000, 600);
+background(255);
 
-HandyRenderer[] hashtags = new HandyRenderer[9];
-
-void setup()
+// Each Word object has its word, and its weight.  You can use whatever
+// numbers you like for their weights, and they can be in any order.
+Word[] wordArray = new Word[10];
+int count = 0;
+for(TableRow row: hashtags.rows())
 {
-  size(1000, 800);
-  smooth();
-  noLoop();
-  
-  zoomer = new ZoomPan(this);  
-  textFont(createFont("Helvetica",100));
-
- 
-
-  for (int i = 0; i < 9; i++)
-  {
-    hashtags[i] = HandyPresets.createColouredPencil(this);
-  }
-
-  pTreeMappa = new PTreeMappa(this);
-  pTreeMappa.readData("aggregate.csv");
-  pTreeMappa.setColourTable("red");
-  
-   // Customise the appearance of the treemap
-//  pTreeMappa.getTreeMapPanel().setBorders(0);
-//  
-//  pTreeMappa.getTreeMapPanel().setShowBranchLabels(true);
-//  pTreeMappa.getTreeMapPanel().setBranchMaxTextSize(0,80);
-//  pTreeMappa.getTreeMapPanel().setBranchMaxTextSize(1,30);
-//  pTreeMappa.getTreeMapPanel().setLeafMaxTextSize(20);
-//  pTreeMappa.getTreeMapPanel().setAllowVerticalLabels(true);
-//  pTreeMappa.getTreeMapPanel().setBranchTextColours(color(0,50));
-//  pTreeMappa.getTreeMapPanel().setLeafTextColour(color(0,0,80));
-//  pTreeMappa.getTreeMapPanel().updateLayout();
-
-  
-  // Load the data and build the treemap
+  int weight = row.getInt("Total_Num_Tweets") + row.getInt("Total_Num_Retweets") + row.getInt("Total_Num_Favorites");
+  wordArray[count] = new Word(row.getString("#Label"), weight);  
+  count++;
 }
 
-void draw()
-{
-    background(255);
-    zoomer.transform();
+// Pass in the sketch (the variable "this"), so WordCram can draw to it.
+WordCram wordcram = new WordCram(this)
 
-//  background(235, 215, 182);
-//
-//  for (int i = 0; i < 9; i++)
-//  {
-//    fill(206+random(-30, 30), 76+random(-30, 30), 52+random(-30, 30), 160);
-//    hashtags[i].rect(random(10, 200), random(10, 50), 80, 50);
-//  }
-//  
-  pTreeMappa.draw();
-}
+// Pass in the words to draw.
+  .fromWords(wordArray);
 
-void mouseClicked()
-{
-}
+// Now we've created our WordCram, we can draw it:
+wordcram.drawAll();
