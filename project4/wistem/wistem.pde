@@ -20,8 +20,8 @@ WordPlacer placer;
 
 void setup()
 {
-  size(1000, 500);
-  background(255);
+  size(1000, 800);
+  background(80);
   
   readData();
 
@@ -31,9 +31,12 @@ void setup()
     // Pass in the words to draw.
     .fromWords(wordArray)
     .withFont(createFont("data/SketchMatch.ttf", 1))
-    .sizedByWeight(12, 80)
+    .sizedByWeight(12, 55)
     .maxAttemptsToPlaceWord(1000)
-    .withPlacer(placer);
+    .withPlacer(placer)
+     .withColors(color(30), color(110),
+              color(random(255), 240, 200))
+    ;
    
     // Now we've created our WordCram, we can draw it:
     
@@ -47,7 +50,7 @@ void setup()
 void draw() {
   println(wordcram.getSkippedWords());
   // Set up styles for when we draw stuff to the screen (later)
-  textFont(createFont("data/master_of_break.ttf", 150));
+  textFont(createFont("data/PaleBlueEyes.ttf", 50));
   textAlign(CENTER, CENTER);
   // First, wipe out the last frame: re-draw the cached image
   image(cachedImage, 0, 0);
