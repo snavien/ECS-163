@@ -39,8 +39,8 @@ void setup()
   
   // Pass in the words to draw.
     .fromWords(wordArray)
+     .withFont(createFont("BookAntiqua-Bold-48.vlw", 1))
     .sizedByWeight(8, 70);
-    ;
  
 
 }
