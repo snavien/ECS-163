@@ -40,11 +40,11 @@ void setup()
     // Pass in the words to draw.
     .fromWords(wordArray)
     .withFont(createFont("data/SketchMatch.ttf", 1))
-    .sizedByWeight(12, 55)
+    .sizedByWeight(20, 70)
     .maxAttemptsToPlaceWord(1000)
     .withPlacer(placer)
-     .withColors(color(30), color(110),
-              color(random(255), 240, 200));
+     .withColors(color(30, 30), color(110, 30),
+              color(random(255), 240, 200, 30));
   wordcram.drawAll();
   cachedImage = get();
   
@@ -131,7 +131,7 @@ void draw() {
   else if(state == 3)
   {
     int year = getYearFromSlider();
-    
+    image(cachedImage, 0, 0);
     if(year != 0 && year <= 2016) {
       for(int i = 0; i < NUM_CSV; i++)
       {
