@@ -9,6 +9,7 @@ import org.gicentre.utils.stat.*;
 
 Word lastClickedWord; // The word that was under the user's last click
 WordCram wordcram;
+WordPlacer placer;
 
 int state = 3; 
 // 0 = word cloud
@@ -35,9 +36,14 @@ void setup()
 
     // Pass in the words to draw.
     .fromWords(wordArray)
-    .withFont("data/BookAntiqua-Bold-48.vlw")
-    .sizedByWeight(12, 80)
-    .maxAttemptsToPlaceWord(1000);
+    .withFont(createFont("data/SketchMatch.ttf", 1))
+    .sizedByWeight(12, 55)
+    .maxAttemptsToPlaceWord(1000)
+    .withPlacer(placer)
+     .withColors(color(30), color(110),
+              color(random(255), 240, 200))
+    ;
+   
    
     // Now we've created our WordCram, we can draw it:
     
@@ -105,7 +111,7 @@ void draw() {
   if(state == 0) {
     println(wordcram.getSkippedWords());
     // Set up styles for when we draw stuff to the screen (later)
-    textFont(createFont("data/BookAntiqua-Bold-48.vlw", 150));
+    textFont(createFont("data/PaleBlueEyes.ttf", 50));
     textAlign(CENTER, CENTER);
     // First, wipe out the last frame: re-draw the cached image
     image(cachedImage, 0, 0);
