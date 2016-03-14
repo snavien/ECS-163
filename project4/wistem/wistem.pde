@@ -10,7 +10,8 @@ import org.gicentre.utils.stat.*;
 Word lastClickedWord; // The word that was under the user's last click
 WordCram wordcram;
 WordPlacer placer;
-
+PieChart pieChart = new PieChart();
+float []angles  = {51,51,51,51,51,51,54};
 int state = 3; 
 // 0 = word cloud
 // 1 = transition
@@ -132,6 +133,8 @@ void draw() {
   {
     int year = getYearFromSlider();
     image(cachedImage, 0, 0);
+    pieChart.drawPieChart(300, angles);
+
     if(year != 0 && year <= 2016) {
       for(int i = 0; i < NUM_CSV; i++)
       {
@@ -144,7 +147,6 @@ void draw() {
     }
     
     textFont(createFont("data/Default.tff", 12));
-    background(255,255,255);
     for(int i = 0; i < NUM_CSV; i++)
     {
       lineChart[i].draw(30,height/2 - 60,width-30,height/2);
@@ -230,11 +232,4 @@ void report() {
       left++;
     }
   }
-
-
-  print("TooMany " + tooMany + "  ");
-  print("TooSmall " + tooSmall + "  ");
-  print("CouldNotPlace " + couldNotPlace + "  ");
-  print("Placed " + placed + "  ");
-  println("Left " + left);
 }
