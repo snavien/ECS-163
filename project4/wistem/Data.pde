@@ -58,7 +58,6 @@ void createWordArray()
     println(row.getString("#Label"));
     wordArray[count] = new Word(row.getString("#Label"), weight/total_weight);  
     count++;
-    print(count);
   }
   
 }
@@ -75,7 +74,6 @@ void processDataPopularity()
   {
     for(TableRow row : data[currCSV].rows())
     {
-      println("running " + currCSV);
       try { 
         year = row.getInt(YEAR); 
         s_month = row.getString(MONTH);
@@ -105,7 +103,6 @@ void processDataPopularity()
     
     }
   }
-  println("complete");
 }
 
 void zeroPopularityByDate()
