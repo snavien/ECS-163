@@ -21,7 +21,7 @@ void setup()
   zoomer = new ZoomPan(this);  
   textFont(createFont("Helvetica",100));
 
- 
+  readData(); 
 
   for (int i = 0; i < 9; i++)
   {
