@@ -18,11 +18,12 @@ int state = 3;
 // 3 = frequency chart
 
 XYChart[] lineChart = new XYChart[NUM_CSV];
-color[] m_color = {color(220,20,60), color(255,127,80), color(255,140,0), color(255,215,0), 
-                   color(0,100,0), color(144,238,144),color(32,178,170), color(100,149,237),
-                   color(25,25,112), color(75,0,130), color(128,0,128)};
+Rainbow c = new Rainbow();
+float[][] y_data; // csv, year
 
 PImage cachedImage; // Cache the rendered wordcram, so drawing is fast
+
+Slider s;
 
 void setup()
 {
@@ -31,7 +32,9 @@ void setup()
   
   readData();
   
-  // Pass in the sketch (the variable "this"), so WordCram can draw to it.
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  // WORD CLOUD
+  ///////////////////////////////////////////////////////////////////////////////////////////////
   wordcram = new WordCram(this)
 
     // Pass in the words to draw.
@@ -41,24 +44,20 @@ void setup()
     .maxAttemptsToPlaceWord(1000)
     .withPlacer(placer)
      .withColors(color(30), color(110),
-              color(random(255), 240, 200))
-    ;
-   
-   
-    // Now we've created our WordCram, we can draw it:
-    
+              color(random(255), 240, 200));
   wordcram.drawAll();
   cachedImage = get();
   
-
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  // LINE CHART
+  ///////////////////////////////////////////////////////////////////////////////////////////////
   float[] x_data = new float[YEARS];
   for(int i = 0; i < YEARS; i++)
   {
     x_data[i] = i + 2006; 
   }
                     
-  float[][] y_data = new float[NUM_CSV][YEARS];
+  y_data = new float[NUM_CSV][YEARS];
   for(int csv = 0; csv < NUM_CSV; csv++)
   {
     for(int i = 0; i < YEARS; i++)
@@ -79,7 +78,7 @@ void setup()
     }
   }
   
-                     
+  color[] m_color = c.getArray();                   
   for(int index = 0; index < NUM_CSV; index++)
   {
     lineChart[index] = new XYChart(this);
@@ -97,19 +96,16 @@ void setup()
     lineChart[index].showXAxis(true); 
     lineChart[index].showYAxis(true);
   }
-  
-  //lineChart[0].showXAxis(true);
-  //lineChart[0].showYAxis(true); 
-   
-  // Symbol colours
-  //lineChart[0].setPointColour(color(180,50,50,100));
 
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  // MISC
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  s = new Slider(0, height - 20, width, 20);
 }
 
 void draw() {
   if(state == 0) {
-    println(wordcram.getSkippedWords());
+    //println(wordcram.getSkippedWords());
     // Set up styles for when we draw stuff to the screen (later)
     textFont(createFont("data/PaleBlueEyes.ttf", 50));
     textAlign(CENTER, CENTER);
@@ -134,16 +130,73 @@ void draw() {
   }
   else if(state == 3)
   {
+    int year = getYearFromSlider();
+    
+    if(year != 0 && year <= 2016) {
+      for(int i = 0; i < NUM_CSV; i++)
+      {
+        c.setAlpha(i, y_data[i][year - 2006] / 10.0 * 255);
+      }
+    }
+    else {
+      c.resetColor();
+      println("HELP");
+    }
+    
+    textFont(createFont("data/Default.tff", 12));
     background(255,255,255);
     for(int i = 0; i < NUM_CSV; i++)
     {
-      lineChart[i].draw(30,height/2 - 30,width-30,height/2);
+      lineChart[i].draw(30,height/2 - 60,width-30,height/2);
     }
+    
+    color[] m_color = c.getArray();
+    textFont(createFont("data/SketchMatch.ttf", 30));
+    int textIndex;
+    for(textIndex = 0; textIndex < NUM_CSV; textIndex++)
+    {
+      fill(m_color[textIndex]);
+      text(hashtag[textIndex], 30, 30 + 30*textIndex);
+    }
+    fill(0, 0, 0);
+    text("Year Choosen: " + ((year == 0) ? "ALL" : year), 30, 30 + 30*textIndex);
+    s.draw();
+  }
+  
+}
+
+int getYearFromSlider()
+{
+  /*
+    < .03 = all time
+    interval increases by .08818182 
+  */
+  float percentage = s.getPos() - .015;
+  float year_area = percentage / (((1000 - (1000 * .015)) / 11)/1000); 
+  int year = floor(year_area)  + 2006;
+  
+  
+  return (percentage < .015) ? 0 : year;
+}
+
+void mousePressed()
+{
+  if(state == 3)
+  {
+    if(s.overEvent()) {s.press();}
   }
 }
 
 void mouseClicked() {
   lastClickedWord = wordcram.getWordAt(mouseX, mouseY);
+}
+
+void mouseDragged() 
+{
+  if(state == 3)
+  {
+    if(s.overEvent()) {s.press();}
+  }
 }
 
 void report() {
