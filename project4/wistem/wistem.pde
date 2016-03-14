@@ -5,7 +5,7 @@ This is as basic as it gets.  If you can't get this running,
 
 import wordcram.*;
 import wordcram.text.*;
-
+import java.awt.*;
 Word lastClickedWord; // The word that was under the user's last click
 WordCram wordcram;
 
@@ -16,22 +16,24 @@ int state = 0;
 
 
 PImage cachedImage; // Cache the rendered wordcram, so drawing is fast
+WordPlacer placer;
 
 void setup()
 {
-  size(1000, 1000);
+  size(1000, 500);
   background(255);
   
   readData();
-  
+
   // Pass in the sketch (the variable "this"), so WordCram can draw to it.
   wordcram = new WordCram(this)
 
     // Pass in the words to draw.
     .fromWords(wordArray)
-    .withFont("data/BookAntiqua-Bold-48.vlw")
+    .withFont(createFont("data/SketchMatch.ttf", 1))
     .sizedByWeight(12, 80)
-    .maxAttemptsToPlaceWord(1000);
+    .maxAttemptsToPlaceWord(1000)
+    .withPlacer(placer);
    
     // Now we've created our WordCram, we can draw it:
     
@@ -45,7 +47,7 @@ void setup()
 void draw() {
   println(wordcram.getSkippedWords());
   // Set up styles for when we draw stuff to the screen (later)
-  textFont(createFont("data/BookAntiqua-Bold-48.vlw", 150));
+  textFont(createFont("data/master_of_break.ttf", 150));
   textAlign(CENTER, CENTER);
   // First, wipe out the last frame: re-draw the cached image
   image(cachedImage, 0, 0);
