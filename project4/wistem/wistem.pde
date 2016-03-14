@@ -8,6 +8,7 @@ import wordcram.text.*;
 import java.awt.*;
 Word lastClickedWord; // The word that was under the user's last click
 WordCram wordcram;
+Slider time = new Slider();
 
 int state = 0; 
 // 0 = word cloud
