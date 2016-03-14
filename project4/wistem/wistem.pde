@@ -4,47 +4,26 @@ This is as basic as it gets.  If you can't get this running,
  */
 
 import wordcram.*;
-Table hashtags;
 import wordcram.text.*;
-
-
 
 Word lastClickedWord; // The word that was under the user's last click
 WordCram wordcram;
+
+int state = 0; 
+// 0 = word cloud
+// 1 = transition
+// 2 = frequency hashtag
+
 
 PImage cachedImage; // Cache the rendered wordcram, so drawing is fast
 
 void setup()
 {
-
-  hashtags = loadTable("aggregate.csv", "header");
-
   size(1000, 1000);
   background(255);
-
-
-  // Each Word object has its word, and its weight.  You can use whatever
-  // numbers you like for their weights, and they can be in any order.
-  Word[] wordArray = new Word[10];
-  int count = 0;
-  float total_weight = 0;
-  for (TableRow row : hashtags.rows())
-  {
-    total_weight += row.getInt("Total_Num_Tweets") + row.getInt("Total_Num_Retweets") + row.getInt("Total_Num_Favorites");
-
-  }
-
-  for (TableRow row : hashtags.rows())
-  {
-    int weight = row.getInt("Total_Num_Tweets") + row.getInt("Total_Num_Retweets") + row.getInt("Total_Num_Favorites");
-    println(row.getString("#Label"));
-    wordArray[count] = new Word(row.getString("#Label"), weight/total_weight);  
-    count++;
-    print(count);
-  }
   
-
-
+  readData();
+  
   // Pass in the sketch (the variable "this"), so WordCram can draw to it.
   wordcram = new WordCram(this)
 
@@ -117,6 +96,7 @@ void report() {
       left++;
     }
   }
+
 
   print("TooMany " + tooMany + "  ");
   print("TooSmall " + tooSmall + "  ");
