@@ -117,4 +117,4 @@ void report() {
   print("CouldNotPlace " + couldNotPlace + "  ");
   print("Placed " + placed + "  ");
   println("Left " + left);
-}
+}}
