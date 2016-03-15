@@ -13,14 +13,18 @@ WordPlacer placer;
 PieChart pieChart = new PieChart();
 float []angles  = {51,51,51,51,51,51,54};
 int state = 3; 
+int extra_state = 0; 
 // 0 = word cloud
 // 1 = transition
 // 2 = frequency hashtag
 // 3 = frequency chart
 
 XYChart[] lineChart = new XYChart[NUM_CSV];
+XYChart[] lineChart1 = new XYChart[NUM_CSV];
 Rainbow c = new Rainbow();
 float[][] y_data; // csv, year
+float[][] y_month;
+float[] x_month; 
 
 PImage cachedImage; // Cache the rendered wordcram, so drawing is fast
 
@@ -29,7 +33,7 @@ Slider s;
 void setup()
 {
   size(1000, 800);
-  background(255);
+  background(200);
   
   readData();
   
@@ -44,7 +48,7 @@ void setup()
     .sizedByWeight(20, 70)
     .maxAttemptsToPlaceWord(1000)
     .withPlacer(placer)
-     .withColors(color(30, 30), color(110, 30),
+     .withColors(color(80, 80), color(110, 80),
               color(random(255), 240, 200, 30));
   wordcram.drawAll();
   cachedImage = get();
@@ -53,12 +57,19 @@ void setup()
   // LINE CHART
   ///////////////////////////////////////////////////////////////////////////////////////////////
   float[] x_data = new float[YEARS];
+  float[] x_month = new float[YEARS * MONTHS]; 
   for(int i = 0; i < YEARS; i++)
   {
     x_data[i] = i + 2006; 
   }
+  
+  for(int i = 0; i < YEARS * MONTHS; i++)
+  {
+    x_month[i] = i;
+  }
                     
   y_data = new float[NUM_CSV][YEARS];
+  y_month = new float[NUM_CSV][YEARS *MONTHS];
   for(int csv = 0; csv < NUM_CSV; csv++)
   {
     for(int i = 0; i < YEARS; i++)
@@ -66,6 +77,8 @@ void setup()
       for(int j = 0; j < MONTHS; j++)
       {
         y_data[csv][i] = y_data[csv][i] + popularityByDate[i][j][csv][S_COUNT] + popularityByDate[i][j][csv][S_RETWEET] +
+                        popularityByDate[i][j][csv][S_FAVORITE];
+        y_month[csv][i*j] = popularityByDate[i][j][csv][S_COUNT] + popularityByDate[i][j][csv][S_RETWEET] +
                         popularityByDate[i][j][csv][S_FAVORITE];
       }
     }
@@ -76,6 +89,10 @@ void setup()
     for(int i = 0; i < YEARS; i++)
     {
       y_data[csv][i] = log(y_data[csv][i]);
+      for(int j = 0; j < MONTHS; j++)
+      {
+        y_month[csv][i*j] = log(y_month[csv][i*j]);
+      }
     }
   }
   
@@ -96,6 +113,21 @@ void setup()
     lineChart[index].setLineWidth(2);
     lineChart[index].showXAxis(true); 
     lineChart[index].showYAxis(true);
+    
+    lineChart1[index] = new XYChart(this);
+    lineChart1[index].setData(x_month, y_month[index]);
+    lineChart1[index].showYAxis(false); 
+    lineChart1[index].showXAxis(false);
+    lineChart1[index].setMinY(0);
+    lineChart1[index].setMaxY(17);
+    lineChart1[index].setXFormat("0000"); // year
+    //l.setPointColor(color(180,50,50,100));
+    lineChart1[index].setPointColour(m_color[index]);
+    lineChart1[index].setLineColour(m_color[index]);
+    lineChart1[index].setPointSize(5);
+    lineChart1[index].setLineWidth(2);
+    lineChart1[index].showXAxis(true); 
+    lineChart1[index].showYAxis(true);
   }
 
   ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,8 +165,17 @@ void draw() {
   {
     int year = getYearFromSlider();
     image(cachedImage, 0, 0);
+    
+    
+  float [] data = {8787308/15157730.0, 8992599/15464197, 92429814/16210103.0,
+                  10094332/17404882.0, 10379172/17915,952.0, 10382782/17878363.0,
+                  10151705/17514160.0},
+                  
+           data1 ={0.621334146,0.622170603, 0.623552471, 0.621487522, 0.619928513, 0.616829287, 0.614900154
+           };
     pieChart.drawPieChart(300, angles);
 
+   
     if(year != 0 && year <= 2016) {
       for(int i = 0; i < NUM_CSV; i++)
       {
@@ -146,23 +187,44 @@ void draw() {
       println("HELP");
     }
     
-    textFont(createFont("data/Default.tff", 12));
-    for(int i = 0; i < NUM_CSV; i++)
-    {
-      lineChart[i].draw(30,height/2 - 60,width-30,height/2);
+    if(extra_state == 0) {
+      textFont(createFont("data/Default.tff", 12));
+      for(int i = 0; i < NUM_CSV; i++)
+      {
+        lineChart[i].draw(30,height/2 - 60,width-30,height/2);
+      }
+      
+      color[] m_color = c.getArray();
+      textFont(createFont("data/SketchMatch.ttf", 30));
+      int textIndex;
+      for(textIndex = 0; textIndex < NUM_CSV; textIndex++)
+      {
+        fill(m_color[textIndex]);
+        text(hashtag[textIndex], 30, 30 + 30*textIndex);
+      }
+      fill(0, 0, 0);
+      text("Year Choosen: " + ((year == 0) ? "ALL" : year), 30, 30 + 30*textIndex);
+      s.draw();
     }
-    
-    color[] m_color = c.getArray();
-    textFont(createFont("data/SketchMatch.ttf", 30));
-    int textIndex;
-    for(textIndex = 0; textIndex < NUM_CSV; textIndex++)
-    {
-      fill(m_color[textIndex]);
-      text(hashtag[textIndex], 30, 30 + 30*textIndex);
+    else {
+      textFont(createFont("data/Default.tff", 12));
+      for(int i = 0; i < NUM_CSV; i++)
+      {
+        lineChart1[i].draw(30,height/2 - 60,width-30,height/2);
+      }
+      
+      color[] m_color = c.getArray();
+      textFont(createFont("data/SketchMatch.ttf", 30));
+      int textIndex;
+      for(textIndex = 0; textIndex < NUM_CSV; textIndex++)
+      {
+        fill(m_color[textIndex]);
+        text(hashtag[textIndex], 30, 30 + 30*textIndex);
+      }
+      fill(0, 0, 0);
+      text("Year Choosen: " + ((year == 0) ? "ALL" : year), 30, 30 + 30*textIndex);
+      s.draw();
     }
-    fill(0, 0, 0);
-    text("Year Choosen: " + ((year == 0) ? "ALL" : year), 30, 30 + 30*textIndex);
-    s.draw();
   }
   
 }
@@ -198,6 +260,16 @@ void mouseDragged()
   if(state == 3)
   {
     if(s.overEvent()) {s.press();}
+  }
+}
+
+void keyPressed()
+{
+  if(keyCode == LEFT) {
+    extra_state = 0;
+  }
+  else if(keyCode == RIGHT) {
+    extra_state = 1;
   }
 }
 

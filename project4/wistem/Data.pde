@@ -78,17 +78,17 @@ void processDataPopularity()
         year = row.getInt(YEAR); 
         s_month = row.getString(MONTH);
         
-        if(s_month == "Jan") i_month = 0; 
-        else if(s_month == "Feb") i_month = 1;
-        else if(s_month == "Mar") i_month = 2;
-        else if(s_month == "Apr") i_month = 3;
-        else if(s_month == "May") i_month = 4;
-        else if(s_month == "Jun") i_month = 5;
-        else if(s_month == "Jul") i_month = 6;
-        else if(s_month == "Aug") i_month = 7;
-        else if(s_month == "Sep") i_month = 8;
-        else if(s_month == "Oct") i_month = 9;
-        else if(s_month == "Nov") i_month = 10;
+        if(s_month.equals("Jan")) i_month = 0; 
+        else if(s_month.equals("Feb")) i_month = 1;
+        else if(s_month.equals("Mar")) i_month = 2;
+        else if(s_month.equals("Apr")) i_month = 3;
+        else if(s_month.equals("May")) i_month = 4;
+        else if(s_month.equals("Jun")) i_month = 5;
+        else if(s_month.equals("Jul")) i_month = 6;
+        else if(s_month.equals("Aug")) i_month = 7;
+        else if(s_month.equals("Sep")) i_month = 8;
+        else if(s_month.equals("Oct")) i_month = 9;
+        else if(s_month.equals("Nov")) i_month = 10;
         else                      i_month = 11; //(s_month == "Dec")
         
         popularityByDate[year - 2006][i_month][currCSV][S_COUNT] = 
